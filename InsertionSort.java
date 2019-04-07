@@ -32,8 +32,10 @@ public class InsertionSort implements Sortable {
 				input(i-1,i);
 				if(check()) {
 					swap.doClick();
-				}
-			}
+				} else {
+               break;
+            }
+			}  
 		}
 	}
 
@@ -45,18 +47,21 @@ public class InsertionSort implements Sortable {
 	}
 
 	private void input(int a,int b) {
-		try {
-			Thread.sleep(1000);
+		for(Button i: array) {
+         i.setState(Button.NONE);
+      }
+		this.a.setText("" + (a));
+      array.get(APanel.getInt(this.a)).setState(Button.COMPARE);
+		this.b.setText("" + b);
+      array.get(APanel.getInt(this.b)).setState(Button.COMPARE);
+      try {
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 
 			e.printStackTrace();
 		}
-
-		this.a.requestFocus();
-		this.a.setText("" + (a));
-		this.b.requestFocus();
-		this.b.setText("" + b);
 	}
+	
 
 
 }

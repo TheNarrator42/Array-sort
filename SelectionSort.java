@@ -31,12 +31,13 @@ public class SelectionSort implements Sortable {
 				input(min,y);
 				if(check()) {
 					min = y;
-
 				}
 			}
 			input(min, x);
+         
 			swap.doClick();
-
+         array.get(x).setState(Button.SECURED);
+         
 		}
 
 	}
@@ -49,17 +50,19 @@ public class SelectionSort implements Sortable {
 	}
 
 	private void input(int a,int b) {
-		try {
-			Thread.sleep(1000);
+	   for(Button i: array) {
+         i.setState(Button.NONE);
+      }
+		this.a.setText("" + (a));
+      array.get(APanel.getInt(this.a)).setState(Button.COMPARE);
+		this.b.setText("" + b);
+      array.get(APanel.getInt(this.b)).setState(Button.COMPARE);
+      try {
+			Thread.sleep(500/array.size());
 		} catch (InterruptedException e) {
 
 			e.printStackTrace();
 		}
-
-		this.a.requestFocus();
-		this.a.setText("" + (a));
-		this.b.requestFocus();
-		this.b.setText("" + b);
 	}
 
 

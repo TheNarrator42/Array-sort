@@ -29,26 +29,34 @@ public class BubbleSort implements Sortable {
 		for(int o = 1; o < array.size(); o++) {
 			for(int n = 1; n < array.size() - o+1; n++ ) {
 				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					
-					e.printStackTrace();
-				}
+				for(int i = 0; i < n; i++) {
+               array.get(i).setState(Button.NONE);
+            }
 				
-				a.requestFocus();
-				a.setText("" + (n-1));
-				b.requestFocus();
+            a.setText("" + (n-1));
+				array.get(APanel.getInt(a)).setState(Button.COMPARE);
+
 				b.setText("" + n);
+				array.get(APanel.getInt(b)).setState(Button.COMPARE);
+
+			
 				
 				if(check()) {
 					swap.doClick();
 				}
 				
 				
+            try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
 			}
+         array.get(array.size()-o-1).setState(Button.NONE);
 			array.get(array.size()-o).setState(Button.SECURED);
 		}
+      array.get(0).setState(Button.SECURED);
 	}
 	public boolean check() {
 		if(APanel.getInt(array.get(APanel.getInt(a))) > APanel.getInt(array.get(APanel.getInt(b))) ) {

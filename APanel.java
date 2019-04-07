@@ -6,7 +6,6 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -21,7 +20,7 @@ public class APanel extends JPanel {
    JTextField temp2;
    Timer t;
    Thread th;
-   String[] sorts = {"Bubble Sort", "Selection Sort", "Insertion Sort"};
+   String[] sorts = {"Bubble Sort", "Selection Sort", "Insertion Sort","Bogo Sort"};
    
    public APanel() {
    	
@@ -67,10 +66,11 @@ public class APanel extends JPanel {
          public void actionPerformed(ActionEvent e)
          {
             swap();
+            
          }
       });
       add(swap);//swap button
-      t = new Timer(900, new ActionListener() {
+      t = new Timer(500, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -100,10 +100,12 @@ public class APanel extends JPanel {
       selection.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+         
 			switch((String)jc.getSelectedItem()) {
 			case "Bubble Sort": 
 				th = new Thread() {
 					public void run() {
+                  reset();
 						selection.setEnabled(false);
 						new BubbleSort(buttons,temp1,temp2,swap);
 						selection.setEnabled(true);
@@ -116,6 +118,7 @@ public class APanel extends JPanel {
 			case "Selection Sort":
 				th = new Thread() {
 					public void run() {
+                  reset();
 						selection.setEnabled(false);
 						new SelectionSort(buttons,temp1,temp2,swap);
 						selection.setEnabled(true);
@@ -127,6 +130,7 @@ public class APanel extends JPanel {
 			case "Insertion Sort":
 				th = new Thread() {
 					public void run() {
+                  reset();
 						selection.setEnabled(false);
 						new InsertionSort(buttons,temp1,temp2,swap);
 						selection.setEnabled(true);
@@ -135,6 +139,17 @@ public class APanel extends JPanel {
 				th.start();
 				t.start();
 				break;
+         case "Bogo Sort":
+            th = new Thread() {
+               public void run() {
+                  reset();
+                  selection.setEnabled(false);
+                  new BogoSort(buttons,temp1,temp2,swap);
+                  selection.setEnabled(true);
+               }
+            };
+            th.start();
+            t.start();
 			}
 			
 		}
@@ -144,6 +159,11 @@ public class APanel extends JPanel {
       //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       //setSize(400,400);
       
+   }
+   public void reset(){
+      for(Button i: buttons) {
+         i.setState(Button.NONE);
+      }
    }
    public APanel(int size) {
 	   	
@@ -209,6 +229,7 @@ public class APanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				Random r = new Random();
 				for(Button i: buttons) {
+            i.reset();
 					i.setText("" + (r.ints().iterator().nextInt()%10));
 				}
 				
@@ -257,6 +278,18 @@ public class APanel extends JPanel {
 					th.start();
 					t.start();
 					break;
+            case "Bogo Sort":
+               th = new Thread() {
+                 public void run() {
+                   reset();
+                   selection.setEnabled(false);
+                   new BogoSort(buttons,temp1,temp2,swap);
+                   selection.setEnabled(true);
+                 }
+               };
+               th.start();
+               t.start();
+               break;
 				}
 				
 			}
@@ -265,7 +298,6 @@ public class APanel extends JPanel {
 	      //setLayout(new FlowLayout());
 	      //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      //setSize(400,400);
-	      
 	   }
    private void debugInit() {
 	   for(Button i: buttons) {
@@ -291,6 +323,17 @@ public class APanel extends JPanel {
    }
    public void swap()
    {  try{
+         buttons.get(getInt(temp1)).setState(Button.SWAP);
+         buttons.get(getInt(temp2)).setState(Button.SWAP);
+         Timer tTemp = new Timer(100,new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buttons.get(getInt(temp1)).setState(Button.COMPARE);
+                buttons.get(getInt(temp2)).setState(Button.COMPARE);
+
+            }
+         });
+         tTemp.setRepeats(false);
+         tTemp.start();
          int temp = getInt(buttons.get(getInt(temp1)));
          buttons.get(getInt(temp1)).setText("" + getInt(buttons.get(getInt(temp2))));
          buttons.get(getInt(temp2)).setText("" + temp);
