@@ -14,6 +14,9 @@ public class Button extends JButton {
 		
 	}
 	public void setState(int state) {
+      if(this.state == SECURED) {
+         return;
+      }
 		this.state = state;
 		switch (state) {
 		case NONE:
@@ -36,5 +39,9 @@ public class Button extends JButton {
 		return state;
 	}
 	
+   public void reset(){
+      state = NONE;
+      setState(state);
+   }
 	
 }
